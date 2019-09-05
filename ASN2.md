@@ -26,7 +26,7 @@ passwd
 
 ```
 
-Running `passwd` will prompt your for your current password, then ask you to enter your new password twice. For security, this program doesn't show your your password or even asterisks as you are typing it, so don't worry when nothing shows up.
+Running `passwd` will prompt you for your current password, then ask you to enter your new password twice. For security, this program doesn't show your password or even asterisks as you are typing it, so don't worry when nothing shows up.
 
 Successfully connecting to `tod-compute` and changing your account password so that I cannot login with your old password gets 1/4 points for ASN2. If you would like you can go back and edit the TOD-Compute host entry in Termius to save your password so that you do not need to type it in every time you connect.
 
@@ -36,25 +36,25 @@ Some notes: This machine has a fast 1 TB solid-state drive and a slower network-
 
 When you log in you should already have one folder created in your home directory named `storage`. This is a link to a folder on the large shared drive which you can store large files in. More on this later on!
 
-At some points we will also want to be able to transfer files to and from out personal computers and the server. Unfortunately, I am not a fan of any of the free programs that will work on all computers. I will suggest you downloading and install WinSCP if your personal computer runs Windows (https://winscp.net/eng/download.php) or Fetch if it runs macOS (https://fetchsoftworks.com/fetch/download/). WinSCP is free to use, but Fetch requires a license. Fortunately this is free for Academic purposes, so once you get Fetch installed you should apply for the free license (https://fetchsoftworks.com/fetch/free).
+At some points, we will also want to be able to transfer files to and from our personal computers and the server. Unfortunately, I am not a fan of any of the free programs that will work on all computers. I will suggest you downloading and install WinSCP if your personal computer runs Windows (https://winscp.net/eng/download.php) or Fetch if it runs macOS (https://fetchsoftworks.com/fetch/download/). WinSCP is free to use, but Fetch requires a license. Fortunately, this is free for Academic purposes, so once you get Fetch installed you should apply for the free license (https://fetchsoftworks.com/fetch/free).
 
 ### Connecting with WinSCP
 
-Connecting with either program in similar to connecting with Termius. When you open WinSCP it will automatically open the Login window and default the connection method to "SFTP" which we will be using.
+Connecting with either program is similar to connecting with Termius. When you open WinSCP it will automatically open the Login window and default the connection method to "SFTP" which we will be using.
 
 ![WinSCP connection](Images/WinSCP1.png)
 
 You can save this connection in the same way. Once you have this all set up, you can hit "Login" at the bottom. This again may warn you about the host key, go ahead and accept that again in this program.
 
-This will open up a two-panel window similar to Windows Explorer, with your computer/files on the left side and the remote server files on the right side. Transfering files is as simple and clicking and dragging where you would like them to go.
+This will open up a two-panel window similar to Windows Explorer, with your computer/files on the left side and the remote server files on the right side. Transferring files is as simple and clicking and dragging where you would like them to go.
 
 ### Connecting with Fetch
 
-Connecting with Fetch should be nearly identical, on first run the program will open up the New Connection window where you can put the hostname and username. Fetch defaults to the "FTP" connection mode which is insecure and not enable on our server. Simply use the dropdown and select "SFTP" and connect. Unlike WinSCP Fetch has only a single side showing the remote server files. To transfer files to or from the server you can click and drag from a Finder window.
+Connecting with Fetch should be nearly identical, on the first run the program will open up the New Connection window where you can put the hostname and username. Fetch defaults to the "FTP" connection mode which is insecure and not enable on our server. Simply use the dropdown and select "SFTP" and connect. Unlike WinSCP Fetch has only a single side showing the remote server files. To transfer files to or from the server you can click and drag from a Finder window.
 
 ![Fetch connection](Images/Fetch.png)
 
-At this point we should be set up with everything we need to use the computing resources (at least until we get to differential expression analysis and visualization in a few weeks!)
+At this point, we should be set up with everything we need to use the computing resources (at least until we get to differential expression analysis and visualization in a few weeks!)
 
 # 1-ii. Understanding our reference genome
 
@@ -70,9 +70,9 @@ To save some time and space during these steps, you'll be using only one chromos
 
 The web-based database for the genome assembly is available at the Ensembl website (https://useast.ensembl.org/Homo_sapiens/Info/Index). Another resource for viewing this information is available on the UCSC website and GRCh38/hg38 (https://genome.ucsc.edu/cgi-bin/hgGateway).
 
-The most current human genome sequences are available on the EMBL-EBI FTP (ftp://ftp.ensembl.org/pub/release-86/fasta/homo_sapiens/dna/). These are compressed FASTA files containing raw assembled genome sequence. There are three variants of the files, one that is labeled "dna" and contains the full sequence. The other two are labeled "dna_rm" and "dna_sm". These are the same sequence, but with some repetive or duplicated elements removed or "masked" out. We will be using the main "dna" files.
+The most current human genome sequences are available on the EMBL-EBI FTP (ftp://ftp.ensembl.org/pub/release-86/fasta/homo_sapiens/dna/). These are compressed FASTA files containing raw assembled genome sequence. There are three variants of the files, one that is labeled "dna" and contains the full sequence. The other two are labeled "dna_rm" and "dna_sm". These are the same sequence, but with some repetitive or duplicated elements removed or "masked" out. We will be using the main "dna" files.
 
-First, we should make a directory to do our work for this assignment in. You can name this whatever you like or put it wherever you like.
+First, we should make a directory to do our work for this assignment. You can name this whatever you like or put it wherever you like.
 
 ```bash
 
@@ -93,7 +93,7 @@ ls -lh
 
 Since this file is compressed, we won't be able to work with it directly. The `.gz` suffix indicates that it is a "gzip" compressed file. We can decompress this file with the command `gzip -d [filename]`. 
 
-Q1) What does this do the the file and file name? (Check with `ls -lh` before and after)
+Q1) What does this do to the file and file name? (Check with `ls -lh` before and after)
 
 Take a look inside the chr22 sequence file to look at the general format of the FASTA files:
 
@@ -123,22 +123,19 @@ head -n 425000 | tail
 
 Q3) Do the beginning and middle of the file look similar? Why might one part be different than another?
 
-Q4) How many of each base (A, C, G, T, or N) are present in chromsome 22? There are multiple ways to answer this. Hint: using `grep` with the `-o` flag outputs every match on a new line instead of entire lines.
+Q4) How many of each base (A, C, G, T, or N) are present in chromosome 22? There are multiple ways to answer this. Hint: using `grep` with the `-o` flag outputs every match on a new line instead of entire lines.
 
 Advanced question worth an extra half hour of lab time: AQ1) Restriction sites are DNA elements targeted by special enzymes known as "restriction enzymes" which cut DNA. How many EcoRI sites are present in chromosome 22?
 
 ### The purpose of the reference genome files
 
-The fasta reference genome sequence is essential for determining where any particular DNA/RNA sequence in our sequencing data derived from. Read alignment software like TopHat, BWA, or HISAT2 will require these FASTA files to match the short DNA sequence fragements to. After we know what part of the genome a particular fragment comes from, we can infer which transcripts this fragment may have been a part of and in aggregate how many of each transcript there were in the original sample.
+The FASTA reference genome sequence is essential for determining where any particular DNA/RNA sequence in our sequencing data derived from. Read alignment software like TopHat, BWA, or HISAT2 will require these FASTA files to match the short DNA sequence fragments to. After we know what part of the genome a particular fragment comes from, we can infer which transcripts this fragment may have been a part of and in aggregate how many of each transcript there were in the original sample.
 
 ## Reference transcriptome
 
-The reference genome is a great resource, and obviously has every bit of genome information we know about at this point, but it represents the entire physical existance of the DNA chromosomes. We care about how that information gets transcribed into RNA, and that process involves selecting only certain bits of DNA, transcribing them into RNA, and then cutting and pasting bits of that RNA back together to generate the final transcript. The information that we need to predict how this happens is present in some annotation we will look at next, but the transcript sequences themselves are also available for us. These can be found on the same Ensembl FTP as the genome sequences in a different folder (ftp://ftp.ensembl.org/pub/release-86/fasta/homo_sapiens/cdna/). 
+The reference genome is a great resource and has every bit of genome information we know about at this point, but it represents the entire physical existence of the DNA chromosomes. We care about how that information gets transcribed into RNA, and that process involves selecting only certain bits of DNA, transcribing them into RNA, and then cutting and pasting bits of that RNA back together to generate the final transcript. The information that we need to predict how this happens is present in some annotation we will look at next, but the transcript sequences themselves are also available for us. These can be found on the same Ensembl FTP as the genome sequences in a different folder (ftp://ftp.ensembl.org/pub/release-86/fasta/homo_sapiens/cdna/). 
 
-These are labeled as cDNA, as opposed to RNA or transcripts. Since modern sequencing methods require DNA, in order to determine the sequence of RNA
- transcripts, a biology trick is necessary to "reverse transcribe" RNA into DNA. Since this generates a piece of DNA complementary to the RNA 
-strand, this is known as "complementary DNA" or "cDNA". There are two types of sequence files available one labeled "abinitio" and one labeled 
-"all". The *ab initio* sequences are a limited set of sequences predicted using simple models directly from the genome file. The *all* sequence files contain several times more transcripts, types of transcripts, and variant transcripts (isoforms) and represent all of the known transcripts compiled from experimental databases. 
+These are labeled as cDNA, as opposed to RNA or transcripts. Since modern sequencing methods require DNA, to determine the sequence of RNA transcripts, a biology trick is necessary to "reverse transcribe" RNA into DNA. Since this generates a piece of DNA complementary to the RNA strand, this is known as "complementary DNA" or "cDNA". There are two types of sequence files available one labeled "abinitio" and one labeled "all". The *ab initio* sequences are a limited set of sequences predicted using simple models directly from the genome file. The *all* sequence files contain several times more transcripts, types of transcripts, and variant transcripts (isoforms) and represent all of the known transcripts compiled from experimental databases. 
 
 Let's download each version:
 
@@ -176,9 +173,9 @@ Not all methods for transcriptome analysis use direct read alignment to genomes.
 
 With only the raw DNA sequence, or even the raw cDNA sequences, there isn't a lot we can do. I certainly can't figure out much biologically meaningful information manually from one cDNA sequence, much less tens of thousands. Fortunately, since we began sequencing and studying the human genome, thousands of researchers have spent decades investigating every bit of the human genome. Since this is science, the community has published, collected, and organized this information in a variety of ways to let use associate bits of the human genome with relevant biological information. In general, this process is called *annotation*. 
 
-There are several common file formats for containing gene-level annotation of genomes, but perhaps the most common is GTF/GFF. Both file types are very similar, with some subtle differences (https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/). Both formats are simple text files containing one feature annotation per line. Lines that start with `#` are "comment" lines and don't represent features but do include information that might be useful for orienting yourself with the file. Each normal line contains nine columns separated by tabs. The first eight columns are simple names, numbers, or symbols represnting the name, type, and location of the feature. The final column can be much more complicated and contains a list of attributes in name=value pairs. The details of the GFF3 format may be found at https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md
+There are several common file formats for containing gene-level annotation of genomes, but perhaps the most common is GTF/GFF. Both file types are very similar, with some subtle differences (https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/). Both formats are simple text files containing one feature annotation per line. Lines that start with `#` are "comment" lines and don't represent features but do include information that might be useful for orienting yourself with the file. Each normal line contains nine columns separated by tabs. The first eight columns are simple names, numbers, or symbols representing the name, type, and location of the feature. The final column can be much more complicated and contains a list of attributes in name=value pairs. The details of the GFF3 format may be found at https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md
 
-Since these features are referenced to specific numeric locations in a sequence file, any annotations much match up to a specific reference genome sequence. The Ensembl FTP has files available both for individual chromsomes as well as the entire chromosome or transcript cDNA files. 
+Since these features are referenced to specific numeric locations in a sequence file, any annotations much match up to a specific reference genome sequence. The Ensembl FTP has files available both for individual chromosomes as well as the entire chromosome or transcript cDNA files. 
 
 ```bash
 
@@ -190,11 +187,11 @@ head -n 20 Homo_sapiens.GRCh38.86.chromosome.22.gff3
 
 Q6) The third column of the gff3 files contain the type of feature. How many different types of features are present on chromosome 22? How many coding sequences (CDS) are there? How many standard "gene" annotations are there? What does this tell you about the relationship between "genes" and coding sequences? You may want to refer to other resources like in the introduction to this section.
 
-###  The purpose of the refence sequence annotation
+###  The purpose of the reference sequence annotation
 
-When running alignment based approaches, the exon and transcript level annotations are essential for determining what RNA/cDNA sequences might exist. Individual strings of DNA letters may show up in our RNA sequencing data that do not exist together in the original genome. These might be due to events like splicing which fuse two distant sequences together, or from non-templated addition like in the poly-A tails at the end of mRNAs.  Aligners like TopHat or HISAT2 will use these annotations to properly map these types of reads.
+When running alignment-based approaches, the exon and transcript level annotations are essential for determining what RNA/cDNA sequences might exist. Individual strings of DNA letters may show up in our RNA sequencing data that do not exist together in the original genome. These might be due to events like splicing which fuse two distant sequences together, or from non-templated addition like in the poly-A tails at the end of mRNAs.  Aligners like TopHat or HISAT2 will use these annotations to properly map these types of reads.
 
-Beyond the process of alignment, these annotation files contain the information that lets us know what gene or gene variant is associated with any particular transcript. Knowing what sequence is what gene is essential for interpreting the results, understanding what changes and what doesn't change and therefor what is happening in the biology of our samples. This is the case whether we choose to align directly to the genome or use transcriptome-level quantification tools.
+Beyond the process of alignment, these annotation files contain the information that lets us know what gene or gene variant is associated with any particular transcript. Knowing what sequence is what gene is essential for interpreting the results, understanding what changes and what doesn't change and therefore what is happening in the biology of our samples. This is the case whether we choose to align directly to the genome or use transcriptome-level quantification tools.
 
 # 1-iii. Obtaining transcriptome quantification data
 
