@@ -195,3 +195,25 @@ Beyond the process of alignment, these annotation files contain the information 
 
 # 1-iii. Obtaining transcriptome quantification data
 
+So far we have taken a look specifically at the human reference information. None of this is specific to the experiments we want to analyze. Much like the reference, our data is present in some sequence databases. In contrast to the reference genome though, our data is in a more specialized database intended to provide a warehouse for large amounts of publicly-accessible high-throughput sequence data called the Short Read Archive (SRA). The SRA is hosted by the NCBI, part of the National Institute of Health in Bethesda, Maryland. It is part of an interconnected series of databases which include a variety of annotation about about experimental data. 
+
+## Exploring the data in the NCBI databases
+
+Some of the relevant NCBI databases for obtaining and understanding our data will be `BioProject`, `BioSample`, `SRA`, and `PubMed`. The first of these, `BioProject`, (https://www.ncbi.nlm.nih.gov/bioproject/) is designed to contain, categorize, and describe whole experimental projects. This database will contain links not only to the raw data hosted in databases like `SRA` or `GEO`, but also to any publications that may be associated with this data as well as metadata associated with the raw data itself. 
+
+Some of this metadata is present in the `BioSample` database. This is intended to be a higher-level description of the raw data, each entry is, much like the name, a biological sample that some data derived from. This could be a particular batch of cells grown in a test tube, an environmental sample of water, a biopsy of human tissue, or essentially any other biological unit of physical *stuff* we might sample to generate data. The `BioSample` entries themselves may then be associated with raw data that was derived from that particular biological sample. The quality of this annotation may vary from experiment to experiment because it is up to the individual scientist submitting this to the database to decide which information to include in the submission to the database.
+
+The `BioProject` entries themselves often contain only a brief summary of the experimental goals and data content. In many cases, to really understand what all of the samples represent and how they were generated, you may need to read the associated publications to get enough information. 
+
+We will be working with data that largely resides in two `BioProject` entries. The accession number for the *Leishmania* datasets has the `BioProject` accession
+ PRJNA290995. The data for the *Trypanosoma cruzi* is associated with `BioProject` PRJNA251582. Searching for these in the link provided above should bring up the summary page for each project. Clicking on the number of SRA experiments brings you to a result list in the SRA database. A link at the top of the page should bring you to the SRA Run Selector which lets you interact and download a table containing more information about the data itself.
+ 
+ ![Run selector](Images/SRASelector.png)
+ 
+ Q7) How many RNA-seq datasets are present in each of the two projects? For the *Leishmania major* experiment, how many of these correspond to samples containing parasite infections and how many to non-infected control samples? What other potentially import biological variables can you find in the annotation for these experiments?
+ 
+ Q8) Who is the lead author of the journal article associated with the *Leishmania* project? What publication was this published it?
+ 
+
+ 
+ 
