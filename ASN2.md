@@ -117,7 +117,7 @@ The beginning of our sequence file may look a little funny. Use the line count y
 
 ```bash
 
-head -n [# of lines to middle] | tail -n [# of lines to print]
+head -n 425000 | tail
 
 ```
 
@@ -127,9 +127,74 @@ Q4) How many of each base (A, C, G, T, or N) are present in chromsome 22? There 
 
 Advanced question worth an extra half hour of lab time: AQ1) Restriction sites are DNA elements targeted by special enzymes known as "restriction enzymes" which cut DNA. How many EcoRI sites are present in chromosome 22?
 
+### The purpose of the reference genome files
+
+The fasta reference genome sequence is essential for determining where any particular DNA/RNA sequence in our sequencing data derived from. Read alignment software like TopHat, BWA, or HISAT2 will require these FASTA files to match the short DNA sequence fragements to. After we know what part of the genome a particular fragment comes from, we can infer which transcripts this fragment may have been a part of and in aggregate how many of each transcript there were in the original sample.
+
 ## Reference transcriptome
 
+The reference genome is a great resource, and obviously has every bit of genome information we know about at this point, but it represents the entire physical existance of the DNA chromosomes. We care about how that information gets transcribed into RNA, and that process involves selecting only certain bits of DNA, transcribing them into RNA, and then cutting and pasting bits of that RNA back together to generate the final transcript. The information that we need to predict how this happens is present in some annotation we will look at next, but the transcript sequences themselves are also available for us. These can be found on the same Ensembl FTP as the genome sequences in a different folder (ftp://ftp.ensembl.org/pub/release-86/fasta/homo_sapiens/cdna/). 
+
+These are labeled as cDNA, as opposed to RNA or transcripts. Since modern sequencing methods require DNA, in order to determine the sequence of RNA
+ transcripts, a biology trick is necessary to "reverse transcribe" RNA into DNA. Since this generates a piece of DNA complementary to the RNA 
+strand, this is known as "complementary DNA" or "cDNA". There are two types of sequence files available one labeled "abinitio" and one labeled 
+"all". The *ab initio* sequences are a limited set of sequences predicted using simple models directly from the genome file. The *all* sequence files contain several times more transcripts, types of transcripts, and variant transcripts (isoforms) and represent all of the known transcripts compiled from experimental databases. 
+
+Let's download each version:
+
+```bash
+
+wget ftp://ftp.ensembl.org/pub/release-86/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.abinitio.fa.gz
+wget ftp://ftp.ensembl.org/pub/release-86/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz
+gzip -d Homo_sapiens.GRCh38.cdna.abinitio.fa.gz
+gzip -d Homo_sapiens.GRCh38.cdna.all.fa.gz
+
+```
+
+Since the FASTA format begins each sequence with a special line and follows with any number of lines of sequence, multiple sequences may be included in a single file.
+
+```
+
+>Sequence1
+CGGCATTATCGGAGCTAGCTAGCTGACTG
+CGATGAGCATTACGGTA
+>Sequence2
+GCTAGCGATGCGGCGATTAGCGGGGAGAG
+ATCGATGGGACGATGTATGCGTATG
+
+```
+
+The sequence name line always starts with the `>` character.
+
+Q5) How many transcripts are in each version of the cDNA sequence files?
+
+### The purpose of the reference transcript files
+
+Not all methods for transcriptome analysis use direct read alignment to genomes. In recent years, tools such as Sailfish, Kallisto, or Salmon have become available to rapidly and directly estimate the original number of transcripts directly from the individual DNA fragment sequences. These approaches use lists of individual transcript sequences instead of the original genome sequence. Although these methods do not give you full alignments useful for things like variant calling or other techniques and cannot identify any new transcripts, they can be invaluable for efficiently quantifying the number of each transcript for expression analysis. Since this is the main focus of this FIRE stream, we will likely lean heavily on these transcript-focused approaches.
+
 ## Reference genome annotation
+
+With only the raw DNA sequence, or even the raw cDNA sequences, there isn't a lot we can do. I certainly can't figure out much biologically meaningful information manually from one cDNA sequence, much less tens of thousands. Fortunately, since we began sequencing and studying the human genome, thousands of researchers have spent decades investigating every bit of the human genome. Since this is science, the community has published, collected, and organized this information in a variety of ways to let use associate bits of the human genome with relevant biological information. In general, this process is called *annotation*. 
+
+There are several common file formats for containing gene-level annotation of genomes, but perhaps the most common is GTF/GFF. Both file types are very similar, with some subtle differences (https://www.ncbi.nlm.nih.gov/genbank/genomes_gff/). Both formats are simple text files containing one feature annotation per line. Lines that start with `#` are "comment" lines and don't represent features but do include information that might be useful for orienting yourself with the file. Each normal line contains nine columns separated by tabs. The first eight columns are simple names, numbers, or symbols represnting the name, type, and location of the feature. The final column can be much more complicated and contains a list of attributes in name=value pairs. The details of the GFF3 format may be found at https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md
+
+Since these features are referenced to specific numeric locations in a sequence file, any annotations much match up to a specific reference genome sequence. The Ensembl FTP has files available both for individual chromsomes as well as the entire chromosome or transcript cDNA files. 
+
+```bash
+
+wget ftp://ftp.ensembl.org/pub/release-86/gff3/homo_sapiens/Homo_sapiens.GRCh38.86.chromosome.22.gff3.gz
+gzip -d Homo_sapiens.GRCh38.86.chromosome.22.gff3.gz
+head -n 20 Homo_sapiens.GRCh38.86.chromosome.22.gff3
+
+```
+
+Q6) The third column of the gff3 files contain the type of feature. How many different types of features are present on chromosome 22? How many coding sequences (CDS) are there? How many standard "gene" annotations are there? What does this tell you about the relationship between "genes" and coding sequences? You may want to refer to other resources like in the introduction to this section.
+
+###  The purpose of the refence sequence annotation
+
+When running alignment based approaches, the exon and transcript level annotations are essential for determining what RNA/cDNA sequences might exist. Individual strings of DNA letters may show up in our RNA sequencing data that do not exist together in the original genome. These might be due to events like splicing which fuse two distant sequences together, or from non-templated addition like in the poly-A tails at the end of mRNAs.  Aligners like TopHat or HISAT2 will use these annotations to properly map these types of reads.
+
+Beyond the process of alignment, these annotation files contain the information that lets us know what gene or gene variant is associated with any particular transcript. Knowing what sequence is what gene is essential for interpreting the results, understanding what changes and what doesn't change and therefor what is happening in the biology of our samples. This is the case whether we choose to align directly to the genome or use transcriptome-level quantification tools.
 
 # 1-iii. Obtaining transcriptome quantification data
 
