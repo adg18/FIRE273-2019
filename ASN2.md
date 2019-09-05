@@ -1,5 +1,3 @@
-![RNA-seq Flowchart - Module 1](Images/RNA-seq_Flowchart2.png)
-
 *Note: This assignment has a number of associated questions you'll find as you go through this that need to be submitted on ELMS. Some of these ask you to explain or guess why certain things may be the way that they are. I am not grading on correctness here, rather I am grading based on whether you have completed the assignment and put some thought into the answers. Feel free to discuss these with your group or with me in lab. We will likely go over some of the more important material during class as well.
 
 # 1-i. Connecting to our computing resources.
