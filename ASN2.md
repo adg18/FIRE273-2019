@@ -1,5 +1,9 @@
 *Note: This assignment has a number of associated questions you'll find as you go through this that need to be submitted on ELMS. Some of these ask you to explain or guess why certain things may be the way that they are. I am not grading on correctness here, rather I am grading based on whether you have completed the assignment and put some thought into the answers. Feel free to discuss these with your group or with me in lab. We will likely go over some of the more important material during class as well.
 
+# Submission
+
+This assignment will be linked on ELMS and there should be a submission form for ASN2. You should submit this assignment individually. Feel free to work with and discuss the process and questions with classmates, but make please write your own answers and pick your own dataset for the last section!
+
 # 1-i. Connecting to our computing resources.
 
 ## Connecting to the command line
@@ -205,15 +209,66 @@ Some of this metadata is present in the `BioSample` database. This is intended t
 
 The `BioProject` entries themselves often contain only a brief summary of the experimental goals and data content. In many cases, to really understand what all of the samples represent and how they were generated, you may need to read the associated publications to get enough information. 
 
-We will be working with data that largely resides in two `BioProject` entries. The accession number for the *Leishmania* datasets has the `BioProject` accession
- PRJNA290995. The data for the *Trypanosoma cruzi* is associated with `BioProject` PRJNA251582. Searching for these in the link provided above should bring up the summary page for each project. Clicking on the number of SRA experiments brings you to a result list in the SRA database. A link at the top of the page should bring you to the SRA Run Selector which lets you interact and download a table containing more information about the data itself.
+We will be working with data that largely resides in two `BioProject` entries. The accession number for the *Leishmania* datasets has the `BioProject` accession PRJNA290995. The data for the *Trypanosoma cruzi* is associated with `BioProject` PRJNA251582. Searching for these in the link provided above should bring up the summary page for each project. Clicking on the number of SRA experiments brings you to a result list in the SRA database. A link at the top of the page should bring you to the SRA Run Selector which lets you interact and download a table containing more information about the data itself.
  
- ![Run selector](Images/SRASelector.png)
+![Run selector](Images/SRASelector.png)
  
- Q7) How many RNA-seq datasets are present in each of the two projects? For the *Leishmania major* experiment, how many of these correspond to samples containing parasite infections and how many to non-infected control samples? What other potentially import biological variables can you find in the annotation for these experiments?
+Q7) How many RNA-seq datasets are present in each of the two projects? For the *Leishmania major* experiment, how many of these correspond to samples containing parasite infections and how many to non-infected control samples? What other potentially import biological variables can you find in the annotation for these experiments?
  
- Q8) Who is the lead author of the journal article associated with the *Leishmania* project? What publication was this published it?
+Q8) Who is the lead author of the journal article associated with the *Leishmania* project? What publication was this published it?
  
+## Downloading raw data
+ 
+There are several ways to download the raw sequence data from the SRA database. These can be directly downloaded from the website, from several cloud services, or through command line tools called `sra-tools`. Because together these datasets take up almost an entire terabyte even compressed, these have already been downloaded and are present in a folder on tod-compute at `/mnt/storage/data/` in the `leishmania` and `tcruzi` folders respectively. If you do need to download any additional datasets, instructions for using the `fasterq-dump` program to directly download SRA datasets is found at https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump
+ 
+You can list the downloaded datasets:
+ 
+```bash
+ 
+ls -lh /mnt/storage/data/leishmania
+ls -lh  /mnt/storage/data/tcruzi`
+ 
+```
+ 
+Since these are very large files, we would like to keep them compressed as much as possible. Forunately, through the magic of piping, in many cases it is not necessary to run gzip before you run additional commands, the `gzip` program can be chained just like other unix programs. Adding the `-c` flag to the gzip command forces it to read input or send output to the console, allowing us to either directly print or pipe the data to other programs. Each dataset consists of two files, ending in either `_1.fastq.gz` or `_2.fastq.gz`. This is a consequence of the method of sequencing our samples used, which generates sequence from both ends of each DNA fragment, in a process called "paired-end sequencing". Each set of four lines in each file represent a single read. 
 
+```bash
+
+gzip -dc SRR1346026_1.fastq.gz | head
+gzip -dc SRR1346026_2.fastq.gz | head
+
+```
+
+Q9) Given the output of the previous command, how can you tell which read from file 1 corresponds to its paired read in file 2?
+
+## Initial quality control
+
+There are several programs designed to generally analyze the output from high-throughput sequencing to screen for a variety of common problems or contamination issues that arise. Perhaps the most popular is a program called FastQC (https://www.bioinformatics.babraham.ac.uk/projects/fastqc/). You can use FastQC in two modes. One mode involves running FastQC like a normal GUI program. Download it onto your computer, unzip, and run the `run_fastqc.bat` file. You can then open up `fastq.gz` files you have downloaded to your computer and analyze them directly. The other mode runs via the command line and instead generates HTML output that you can download and view in a web browser. For the final part of the assignment, you have a choice to follow either method. Both will ultimately involve transferring files from the server to your own computer with WinSCP, Fetch, or other SFTP program.
+
+### Run FastQC graphically on your own computer
+
+If you choose to run FastQC on your own computer, ensure that you have at least 15 GB of free space on your hard drive first. This method is also only advisable if you are on a fast on-campus internet connection. Finally, you will need Java installed on your computer. If none of these apply, please don't use this method and skip to method 2. Download FastQC from the link above, choosing either "FastQC v0.11.8 (Win/Linux zip file)" if you run Windows or "FastQC v0.11.8 (Mac DMG image)" if you have a Mac. Extract the file you downloaded and run FastQC following the instructions for either version.
+
+Next, you will pick one of the SRA datasets from *Leishmania* folder. **Do not use the SRR1346026 dataset in the examples.** Connect to the server with your SFTP program of choice and navigate to `/mnt/storage/data/`. Enter either the `tcruzi` or `leishmania` folders and download one dataset (both the `_1.fastq.gz` and `_2.fastq.gz` files). Finally, in the FastQC program go to the open file menu, navigate to, and select the two `.fastq.gz` files you downloaded from the server. This will take a few minutes to analyze both files and should show you the progress as it works.
+
+### Run FastQC remotely on tod-compute and download the results
  
+As an alternative to running FastQC on your computer and directly viewing the results, you can use the FastQC program installed on the tod-compute server. Pick one of the SRA datasets from the *Leishmania* folder. **Do not use the SRR1346026 dataset in the examples.** Next, you should run the `fastqc` program and give it the full path to the files you chose, as well as the location you want to store the output. On the command line the `.` character as a file represents the current directory you are in. Either of the following commands will analyze both files at the same time. This will take a few minutes to analyze both files and should show you the progress as it works.
  
+```bash
+
+fastqc /mnt/storage/data/tcruzi/SRR1346026_1.fastq.gz /mnt/storage/data/tcruzi/SRR1346026_1.fastq.gz --outdir=. 
+fastqc /mnt/storage/data/tcruzi/SRR1346026_*.fastq.gz --outdir=. 
+ 
+```
+
+After this completes, running `ls` in your current (output) directory should show several additional files. There should be two additional `.html` files and two `.zip` files. You will need to download these to your own computer to view them. Connect to the server with your SFTP program of choice and navigate to the folder your are currently in. If you followed this exactly this will probably be `ASN2` in your home directory. Download the `.html` files to a folder on your computer, and open these in your preferred web browser.
+
+### In either case...
+
+Once you have the results for both files, take a look through the different results sections. For the following questions you may want to refer to this guide from Michigan State University for help interpreting the results: https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/
+
+Q10) Compare both of the read 1 and read 2 files you analyzed. Do you notice any differences between them? How many reads were present in the dataset you chose? (Make sure to tell me which dataset you chose)
+
+Q11) Did any of the FastQC analysis modules flag potential problems? For each problem, refer to the MSU guide. Do you think we should worry about these problems? If not, why not? If so, what might we do to address the problem?
+
