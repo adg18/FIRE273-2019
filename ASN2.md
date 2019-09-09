@@ -259,6 +259,10 @@ As an alternative to running FastQC on your computer and directly viewing the re
  
 ```bash
 
+fastqc /mnt/storage/data/tcruzi/[dataset]_1.fastq.gz /mnt/storage/data/tcruzi/[dataset]_2.fastq.gz --outdir=. 
+fastqc /mnt/storage/data/tcruzi/[dataset]_*.fastq.gz --outdir=. 
+
+#Examples
 fastqc /mnt/storage/data/tcruzi/SRR1346026_1.fastq.gz /mnt/storage/data/tcruzi/SRR1346026_1.fastq.gz --outdir=. 
 fastqc /mnt/storage/data/tcruzi/SRR1346026_*.fastq.gz --outdir=. 
  
