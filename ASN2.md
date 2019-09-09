@@ -97,6 +97,8 @@ ls -lh
 
 Since this file is compressed, we won't be able to work with it directly. The `.gz` suffix indicates that it is a "gzip" compressed file. We can decompress this file with the command `gzip -d [filename]`. 
 
+Note: Whenever I give you a command with an element in `[square brackets]` that is just a placeholder. You should replace everything, including the brackets, with the text you need (in this case the filename of the file you just downloaded).
+
 Q1) What does this do to the file and file name? (Check with `ls -lh` before and after)
 
 Take a look inside the chr22 sequence file to look at the general format of the FASTA files:
