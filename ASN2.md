@@ -154,7 +154,7 @@ gzip -d Homo_sapiens.GRCh38.cdna.all.fa.gz
 
 ```
 
-Since the FASTA format begins each sequence with a special line and follows with any number of lines of sequence, multiple sequences may be included in a single file.
+Since the FASTA format begins each sequence with a special line and follows with any number of lines of sequence, multiple sequences may be included in a single file. This is an example sequence file, the names and sequence will be different.
 
 ```
 
@@ -169,7 +169,7 @@ ATCGATGGGACGATGTATGCGTATG
 
 The sequence name line always starts with the `>` character.
 
-Q5) How many transcripts are in each version of the cDNA sequence files?
+Q5) How many transcripts are in each version of the cDNA sequence files? (Hint: if you use the `>` symbol in a command line and you want to mean it is a text character, you should put it in quote `">"`, otherwise it will be used as a special character like the `|`.)
 
 ### The purpose of the reference transcript files
 
