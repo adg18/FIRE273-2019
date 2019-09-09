@@ -121,7 +121,7 @@ The beginning of our sequence file may look a little funny. Use the line count y
 
 ```bash
 
-head -n 425000 | tail
+head -n 425000 [filename] | tail
 
 ```
 
