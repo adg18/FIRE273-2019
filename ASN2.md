@@ -236,8 +236,8 @@ Since these are very large files, we would like to keep them compressed as much 
 
 ```bash
 
-gzip -dc SRR1346026_1.fastq.gz | head
-gzip -dc SRR1346026_2.fastq.gz | head
+gzip -dc /mnt/storage/data/tcruzi/SRR1346026_1.fastq.gz | head
+gzip -dc /mnt/storage/data/tcruzi/SRR1346026_2.fastq.gz | head
 
 ```
 
